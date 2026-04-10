@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gửi em 💖</title>
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ffd6e7, #fff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Phone */
+.phone {
+  width: 320px;
+  height: 600px;
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.notch {
+  width: 120px;
+  height: 20px;
+  background: black;
+  border-radius: 0 0 15px 15px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Envelope */
+.envelope {
+  width: 180px;
+  height: 120px;
+  background: #ff8fab;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.flap {
+  position: absolute;
+  border-left: 90px solid transparent;
+  border-right: 90px solid transparent;
+  border-bottom: 60px solid #ff5d8f;
+  top: -60px;
+  transform-origin: bottom;
+  transition: 0.6s;
+}
+
+/* Hiệu ứng biến mất */
+.hide {
+  transform: scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hint */
+.hint {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #c9184a;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Content */
+.content {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: 1.5s;
+}
+.text {
+  background: rgba(255,255,255,0.6);
+  border-radius: 15px;
+  padding: 15px;
+  backdrop-filter: blur(5px);
+}
+.text {
+  padding: 15px;
+  font-size: 15px;
+  color: #d6336c;
+
+  max-width: 95%;          /* Giới hạn chiều ngang */
+  margin: 0 auto;          /* Căn giữa */
+  
+  
+  line-height: 1.2;        /* Dễ đọc hơn */
+  text-align: center;      /* Hoặc left nếu bạn thích */
+
+  white-space: pre-line;   /* Giữ xuống dòng như bạn viết */
+}
+
+.show {
+  opacity: 1;
+}
+
+.chibi {
+  position: relative;
+  width: 120px;
+  height: 160px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(30px) scale(0.8);
+  transition: 2s;
+}
+
+.chibi.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Đầu */
+.head {
+  width: 80px;
+  height: 80px;
+  background: #ffd6e7;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  box-shadow: inset 0 -5px #ffb3c6;
+}
+
+/* Mắt */
+.head::before,
+.head::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 30px;
+}
+
+.head::before { left: 20px; }
+.head::after { right: 20px; }
+
+/* Thân */
+.body {
+  width: 60px;
+  height: 70px;
+  background: #ff8fab;
+  position: absolute;
+  top: 70px;
+  left: 30px;
+  border-radius: 20px;
+}
+
+/* Hoa */
+.flower {
+  width: 20px;
+  height: 20px;
+  background: pink;
+  border-radius: 50%;
+  position: absolute;
+  top: 90px;
+  left: 70px;
+  box-shadow:
+    -10px 0 pink,
+    10px 0 pink,
+    0 -10px pink,
+    0 10px pink;
+}
+
+.flower::after {
+  content: "";
+  width: 6px;
+  height: 30px;
+  background: green;
+  position: absolute;
+  top: 20px;
+  left: 7px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <div class="screen" id="screen">
+    <div class="envelope" onclick="openLetter()" id="envelope">
+      <div class="flap"></div>
+    </div>
+    <div class="hint" id="hint"> Nhấn vào đây 👆 </div>
+  </div>
+
+  <div class="content" id="content">
+    <div class="chibi" id="chibi">
+  <div class="head"></div>
+  <div class="body"></div>
+  <div class="flower"></div>
+</div>
+    <div class="text" id="text"></div>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+
+<script>
+const message = `Chào em "Thanhh Hiềnn" ! 💖
+
+Hôm nay em làm rất tốt nè,
+em đã cố gắng học hành chăm chỉ,
+tuy cảm giác như gục ngã nhưng cũng cố gắng
+ngày qua ngày chạy deadline.
+
+Anh chỉ có thể trao cho em
+1 chút ngọt ngào và sự quan tâm từ xa như vậy.
+
+Mong em mạnh mẽ vượt qua,
+phía sau anh xin phép đứng đợi
+và cổ vũ em ạ ❤️`;
+
+function openLetter() {
+  const envelope = document.getElementById("envelope");
+  const hint = document.getElementById("hint");
+  const content = document.getElementById("content");
+  const chibi = document.getElementById("chibi");
+
+  // Ẩn thư + hint
+  envelope.classList.add("hide");
+  hint.style.display = "none";
+
+  document.getElementById("music").play();
+
+  // Delay rồi mới hiện nội dung
+  setTimeout(() => {
+    content.classList.add("show");
+  }, 800);
+
+  setTimeout(() => {
+    chibi.classList.add("show");
+  }, 1400);
+
+  setTimeout(typeWriter, 2000);
+
+  createHearts();
+}
+
+/* Gõ chữ */
+let i = 0;
+function typeWriter() {
+  const el = document.getElementById("text");
+  if (i < message.length) {
+    el.innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typeWriter, 30);
+  }
+}
+
+/* Tim bay */
+function createHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.fontSize = (Math.random()*15+10)+"px";
+    document.querySelector(".phone").appendChild(heart);
+
+    setTimeout(()=>heart.remove(),5000);
+  },300);
+}
+</script>
+
+</body>
+</html>
